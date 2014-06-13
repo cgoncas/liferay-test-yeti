@@ -1,0 +1,1 @@
+cd ../tests && yeti --hub http://yeti-2.liferay.com --junit test_fail.html

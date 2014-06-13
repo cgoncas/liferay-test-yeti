@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>lfr-yeti-delay</title>
+        <script src="build/aui/aui.js"></script>
+    </head>
+
+    <body class="yui3-skin-sam">
+        <div id="logger"></div>
+
+        <script>
+            YUI({
+                base: 'build/',
+                coverage: ['lfr-yeti-delay']
+            }).use('test-console', 'test', function(Y) {
+
+                (new Y.Test.Console()).render('#logger');
+
+                var suite = new Y.Test.Suite('lfr-yeti-delay');
+
+                suite.add(new Y.Test.Case({
+                    name: 'Delay',
+                    'test that passes after a long delay': function() {
+                        var test = this;
+
+                        test.wait(
+                            function() {
+                                Y.Assert.pass('This test passes after a long delay');
+                            }, 3000
+                        );
+                    }
+                }));
+
+                Y.Test.Runner.add(suite);
+
+                Y.Test.Runner.setName('lfr-yeti-delay');
+                Y.Test.Runner.run();
+            });
+        </script>
+    </body>
+</html>

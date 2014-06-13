@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>lfr-yeti-syntax-error</title>
+        <script src="build/aui/aui.js"></script>
+    </head>
+
+    <body class="yui3-skin-sam">
+        <div id="logger"></div>
+
+        <script>
+            YUI({
+                base: 'build/',
+                coverage: ['lfr-yeti-syntax-error']
+            }).use('test-console', 'test', function(Y) {
+
+                (new Y.Test.Console()).render('#logger');
+
+                var suite = new Y.Test.Suite('lfr-yeti-syntax-error');
+
+                suite.add(new Y.Test.Case({
+                    name: 'syntax-error',
+                    'test that never runs': function() {
+                        var test = this;
+
+                        Y.Assert.pass('This test won\'t ever run');
+                    }
+                }));
+
+                Y.Test.Runner.add(suite);
+
+                Y.Test.Runner.setName('lfr-yeti-syntax-error');
+                Y.Test.Runner.run();
+            });
+
+            This is a syntax error!!
+        </script>
+    </body>
+</html>
