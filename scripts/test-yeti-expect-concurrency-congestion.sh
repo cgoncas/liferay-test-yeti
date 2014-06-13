@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source ./check_if_user_can_connect_to_browser.sh
+
 #This test execute the yeti test for 2 concurrent users
 
 TEST_RESULTS_DIR=../test_results
@@ -24,34 +26,4 @@ done
 
 #Check if the user has been able to connect to the browser
 
-current_user=1;
-for user_pid in "${pid_users[@]}"
-do
-        child_pid=$(ps --ppid ${user_pid} -o pid| sed -n 2p)
-
-        check_if_pid_is_still_alive=$(ps | grep $child_pid | grep -v grep)
-
-        iteration=1;
-        killed=false;
-        while [ "$check_if_pid_is_still_alive" ]
-        do
-                echo "The tests of the user $current_user are still running in the iteration $iteration"
-                last_output=$(tail -n 1 ${TEST_RESULTS_DIR}/user${current_user}_${FILE_NAME_OUTPUT})
-                if [ "$last_output" == "When ready, press Enter to begin testing." ]
-                then
-                	echo "The user ${current_user} can't connect to the browser: $last_output, so is going to be killed"
-                	kill ${child_pid}
-                	killed=true;
-                fi
-                sleep 1
-                iteration=$((iteration + 1))
-                check_if_pid_is_still_alive=$(ps | grep $child_pid | grep -v grep)
-        done
-
-        if [ $killed = false ]
-        then
-                echo "The user ${current_user} can connect yo the browser"
-        fi
-        current_user=$((current_user + 1))
-done
-
+check_if_pid_is_still_alive ${pid_users[@]}
